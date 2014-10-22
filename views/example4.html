@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Report script authentication using cookie</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1>Report script authentication using cookie</h1>
+
+    <div class="well">
+        <p>
+            When the report is using custom script to load data from your application, you will probably need to authenticate
+            it's request. This can be easily achieved by forwarding authentication cookies. The rendering flow is than following.
+        </p>
+        <p>
+            Client side jsreport will automatically take cookies from the hosting application, packs them and sends with the rendering request.
+            jsreport custom script on the server then can  take the cookies from the rendering request and attach them to the request loading data
+            from the hosting application. This means hosting application will be able to authenticate user from the provided cookie
+            same as it would be send from the browser and provides authorized data.
+        </p>
+        <p>
+            You can see in the following example data are not correctly loaded into the report because user is not authenticated
+            in the hosting application. When you click login, user will be authenticated with the cookie and report refreshed
+            with correct values.
+        </p>
+    </div>
+
+    <div>
+        <a id="login" class="btn btn-md btn-success" href="/example4/login">Login</a>
+        <a id="logout" class="btn btn-md btn-success" href="/example4/logout">Logout</a>
+    </div>
+
+    <div>
+        <div style="margin-top:20px;width: 600px; height: 800px;display: block;" id="placeholder"></div>
+    </div>
+
+    <div class="jsreport-backdrop" style="display:none;background-color: #a3a3a3; opacity: 0.5; position: fixed; left: 0; top: 0; right:0; bottom:0; z-index: 100;"></div>
+</div>
+
+
+<script>
+
+    $(function() {
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+
+        if (getCookie("authorization")) {
+            $("#login").hide();
+            $("#logout").show();
+        } else {
+            $("#login").show();
+            $("#logout").hide();
+        }
+    });
+
+    window.jsreportInit = function (jsreport) {
+        jsreport.render($("#placeholder"), "Wy5oxYbSS");
+    };
+
+</script>
+
+<script>
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "http://local.net:2000/extension/embedding/public/embed.min.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'jsreport-embedding'));
+</script>
+</body>
+</html>

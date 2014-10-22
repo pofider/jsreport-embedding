@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Restricting access to the report templates</title>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+
+<div class="container">
+    <h1>Restricting access to the report templates</h1>
+
+    <div class="well">
+        <p>
+            In a multi user (tenant) environment environment you will probably need to restrict user's access to particular
+            report templates. So one user can't see or edit report templates owned by other user and so on. You can achieve
+            this restrictions with hooking all the requests coming to jsreport  through your proxy or you can use external
+            authorization jsreport provides.
+        </p>
+        <p>
+           jsreport authorization extension when enabled and configured will authorize every data access against your
+           external service.
+           <br/><br/>
+           <strong>Example:</strong><br/>
+           Web page uses jsreport embedded to customize a particular report. jsreport will first call your external service
+           with proper information. Basically it is just a get:<br/>
+           <code></i>http://configured_auth_service/jsreport/authorization/:operation/:type/:shortid</code> <br/>
+           If the response is OK, user will be able to edit that template.
+        </p>
+    </div>
+
+    <div>
+        <a id="block" class="btn btn-md btn-success" href="/example5/block">Block</a>
+        <a id="unblock" class="btn btn-md btn-success" href="/example5/unblock">Unblock</a>
+    </div>
+
+    <div>
+        <div style="margin-top:20px;width: 600px; height: 800px;display: block;" id="placeholder"></div>
+    </div>
+
+    <div class="jsreport-backdrop" style="display:none;background-color: #a3a3a3; opacity: 0.5; position: fixed; left: 0; top: 0; right:0; bottom:0; z-index: 100;"></div>
+</div>
+
+
+<script>
+
+    $(function() {
+        function getCookie(name) {
+            var value = "; " + document.cookie;
+            var parts = value.split("; " + name + "=");
+            if (parts.length == 2) return parts.pop().split(";").shift();
+        }
+
+        if (getCookie("block")) {
+            $("#block").hide();
+            $("#unblock").show();
+        } else {
+            $("#block").show();
+            $("#unblock").hide();
+        }
+    });
+
+    window.jsreportInit = function (jsreport) {
+        jsreport.render($("#placeholder"), "byvZXxtkB");
+    };
+
+</script>
+
+<script>
+
+    (function (d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {
+            return;
+        }
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "http://local.net:2000/extension/embedding/public/embed.min.js";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'jsreport-embedding'));
+</script>
+</body>
+</html>

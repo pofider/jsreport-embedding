@@ -1,0 +1,27 @@
+{
+  "name": "jsreport",
+  "version": "0.0.1",
+  "author": {
+    "name": "Jan Blaha",
+    "email": "jan.blaha@hotmail.com"
+  },
+  "contributors": [],
+  "description": "javascript based business reporting",
+  "keywords": [
+    "report",
+    "business",
+    "javascript"
+  ],
+  "homepage": "https://github.com/jsreport/jsreport",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jsreport/jsreport.git"
+  },
+  "dependencies": {
+    "ejs": "^1.0.0",
+    "express": "^4.9.8"
+  },
+  "devDependencies": {},
+  "main": "server.js",
+  "licence": "MIT"
+}
